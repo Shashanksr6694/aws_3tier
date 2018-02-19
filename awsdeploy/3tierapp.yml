@@ -1,0 +1,29 @@
+---
+# setup application load balancer
+
+- name: setup load-balancer
+  hosts: frontend
+  gather_facts: false
+  become: yes
+  roles:
+     - {name: haproxy}
+
+# setup application deployment
+
+- name: setup app deployment
+  hosts: apps
+  gather_facts: false
+  become: yes
+  roles:
+     - {name: tomcat}
+
+# setup backend database 
+
+- name: setup database deployment
+  hosts: appdb
+  gather_facts: true
+  become: yes
+  become_user: root
+  roles:
+     - {name: geerlingguy.postgresql}
+
